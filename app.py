@@ -1,12 +1,22 @@
 from flask import Flask,render_template,request
-import google.generativeai as palm
+from google import genai
 import os
 
-api = os.getenv("MAKERSUITE_API_TOKEN")
-model = {"model":"models/chat-bison-001"}
-palm.configure(api_key=api)
 
-app = Flask(__name__)
+if GOOGLE_API_KEY:
+    # 如果你用的是 API Key
+    client = genai.Client(api_key=GOOGLE_API_KEY)
+else:
+    # 如果你用的是服务账号认证
+    client = genai.Client(
+        vertexai=True,
+        project=GCP_PROJECT_ID,
+        location=GCP_LOCATION,
+    )
+
+
+
+
 user_name = ""
 flag = 1
 
@@ -16,6 +26,9 @@ def index():
     flag = 1
     return(render_template("index.html"))
 
+
+
+
 @app.route("/main",methods=["GET","POST"])
 def main():
     global flag,user_name
@@ -23,6 +36,11 @@ def main():
         user_name = request.form.get("q")
         flag = 0
     return(render_template("main.html",r=user_name))
+
+@app.route("/joke",methods=["GET","POST"])
+def joke():
+    return(render_template("joke.html"))
+
 
 @app.route("/prediction",methods=["GET","POST"])
 def prediction():
@@ -41,17 +59,31 @@ def DBS_prediction():
 def makersuite():
     return(render_template("makersuite.html"))
 
-@app.route("/makersuite_1",methods=["GET","POST"])
+@app.route("/makersuite_1", methods=["GET", "POST"])
 def makersuite_1():
     q = "Can you help me prepare my tax return?"
-    r = palm.chat(**model, messages=q)
-    return(render_template("makersuite_1_reply.html",r=r.last))
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=q
+        )
+        reply = response.text
+    except Exception as e:
+        reply = f"Error: {str(e)}"
+    return render_template("makersuite_1_reply.html", r=reply)
 
-@app.route("/makersuite_gen",methods=["GET","POST"])
+@app.route("/makersuite_gen", methods=["GET", "POST"])
 def makersuite_gen():
     q = request.form.get("q")
-    r = palm.chat(**model, messages=q)
-    return(render_template("makersuite_gen_reply.html",r=r.last))
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=q
+        )
+        reply = response.text
+    except Exception as e:
+        reply = f"Error: {str(e)}"
+    return render_template("makersuite_gen_reply.html", r=reply)
 
 if __name__ == "__main__":
     app.run()
