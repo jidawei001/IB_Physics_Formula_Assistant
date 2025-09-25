@@ -7,16 +7,10 @@ import os
 
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 
-if GOOGLE_API_KEY:
-    # 如果你用的是 API Key
-    client = genai.Client(api_key=GOOGLE_API_KEY)
-else:
-    # 如果你用的是服务账号认证
-    client = genai.Client(
-        vertexai=True,
-        project=GCP_PROJECT_ID,
-        location=GCP_LOCATION,
-    )
+if not GOOGLE_API_KEY:
+    raise ValueError("❌ GOOGLE_API_KEY not found. Please set it in Render environment variables.")
+
+client = genai.Client(api_key=GOOGLE_API_KEY)
 
 
 
