@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TT Robo Advisor</title>
+    <title>Physics Formula Assistant - Welcome</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,15 +14,18 @@
         }
 
         h2, h3 {
-            color: #555;
+            color: #444;
             text-align: center;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px;
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
         }
 
         input[type="text"], input[type="submit"] {
@@ -44,29 +47,11 @@
             background-color: #45a049;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
         @media (max-width: 600px) {
             .container {
-                margin: 10px;
-                padding: 10px;
+                margin: 20px;
+                padding: 15px;
             }
-
             input[type="text"], input[type="submit"] {
                 width: 100%;
                 margin: 5px 0;
@@ -76,16 +61,13 @@
 </head>
 <body>
     <div class="container">
-        <img src="https://picsum.photos/500/300">
-        <h2>Accounting and Finance genAT and web3 Application (robot friendly)</h2>
-        <h3>Hi, my name is TT robo advisor. May I know your name:</h3>
+        <h2>Welcome to Physics Formula Assistant</h2>
+        <h3>Designed for IB Physics students</h3>
+        <p>Please enter your name to begin:</p>
         <form action="/main" method="post">
-            <input type="text" name="q" placeholder="Enter your name">
-            <input type="submit" value="Enter">
+            <input type="text" name="q" placeholder="Enter your name" required>
+            <input type="submit" value="Start">
         </form>
     </div>
 </body>
 </html>
-
-
-

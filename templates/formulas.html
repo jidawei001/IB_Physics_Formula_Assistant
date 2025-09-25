@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IB Physics Formula Library</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; line-height:1.6; }
+    .container { max-width: 800px; margin: 20px auto; padding: 20px; background: #fff;
+                 border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,.1); }
+    h2 { text-align:center; color:#333; }
+    h3 { color:#444; margin-top:24px; }
+    .formula { margin:10px 0; padding:10px; background:#eef; border-left:4px solid #66c; border-radius:4px; }
+    .back-btn { display:block; margin:30px auto 0; padding:10px 20px; font-size:16px;
+                background:#4CAF50; color:#fff; border:none; border-radius:6px; cursor:pointer;
+                text-decoration:none; text-align:center; width:200px; transition: background-color .3s; }
+    .back-btn:hover { background:#45a049; }
+  </style>
+
+  <!-- 1) 先声明 MathJax 配置（一定要在脚本加载之前） -->
+  <script>
+    window.MathJax = {
+      tex: {
+        // 同时支持 \( ... \) 与 $ ... $
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']]
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+    };
+  </script>
+
+  <!-- 2) 再加载 MathJax（用 defer 更稳） -->
+  <script id="MathJax-script" defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>IB Physics Formula Library</h2>
+
+    {% for topic, formulas_list in formulas.items() %}
+      <h3>{{ topic }}</h3>
+      {% for f in formulas_list %}
+        <div class="formula">
+          <b>{{ f.name }}</b>:
+          <!-- 用 \( ... \) 作为行内公式分隔符；也可改为 $ {{ f.latex }} $ -->
+          \( {{ f.latex }} \)
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+    <!-- 返回 main 页面的按钮 -->
+    <form action="/main" method="get">
+      <button type="submit" class="back-btn">⬅ Back to Main</button>
+    </form>
+  </div>
+</body>
+</html>

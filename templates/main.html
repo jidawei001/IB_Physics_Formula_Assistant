@@ -3,82 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Menu</title>
+    <title>Physics Formula Assistant</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
             color: #333;
         }
-
-        h2 {
-            color: #555;
-            text-align: center;
-        }
-
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 20px;
         }
-
-        input[type="submit"] {
+        input[type="number"], input[type="submit"], input[type="text"] {
             padding: 10px;
-            margin: 10px;
+            margin: 5px;
             border-radius: 5px;
             border: 1px solid #ccc;
             font-size: 16px;
+        }
+        input[type="submit"] {
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
-
         input[type="submit"]:hover {
             background-color: #45a049;
         }
-
         .container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 20px auto;
             padding: 20px;
             background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-
-        @media (max-width: 600px) {
-            .container {
-                margin: 10px;
-                padding: 10px;
-            }
-
-            input[type="submit"] {
-                width: 100%;
-                margin: 5px 0;
-            }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eef;
+            border: 1px solid #99c;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            color: #222;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Hi, {{r}}, how can I help you today?</h2>
-        <form action="/prediction" method="post">
-            <input type="submit" value="Share Price Prediction">
-        </form>
-        <form action="/makersuite" method="post">
-            <input type="submit" value="Financial Q&A">
-        </form>
-        <form action="/joke" method="post">
-            <input type="submit" value="Do you want to hear a joke?">
-        </form>
-        <form action="/" method="post">
-            <input type="submit" value="End">
+        <h2>Physics Formula Assistant</h2>
+
+        <h3>Pendulum Period</h3>
+        <form action="/pendulum" method="post">
+            <input type="number" step="0.01" name="L" placeholder="Length L (m)" value="{{ L or '' }}" required>
+            <input type="number" step="0.01" name="g" placeholder="Gravity g (m/s^2)" value="{{ g or 9.8 }}" required>
+            <input type="submit" value="Calculate T">
         </form>
 
+        <h3>SUVAT Equation (s = ut + 0.5at²)</h3>
+        <form action="/suvat" method="post">
+            <input type="number" step="0.01" name="u" placeholder="Initial velocity u (m/s)" value="{{ u or '' }}" required>
+            <input type="number" step="0.01" name="a" placeholder="Acceleration a (m/s^2)" value="{{ a or '' }}" required>
+            <input type="number" step="0.01" name="t" placeholder="Time t (s)" value="{{ t or '' }}" required>
+
+            <input type="submit" value="Calculate s">
+        </form>
+
+        <h3>Ohm's Law</h3>
+        <form action="/ohm" method="post">
+            <input type="number" step="0.01" name="V" placeholder="Voltage V (V)" value="{{ V or '' }}" required>
+            <input type="number" step="0.01" name="R" placeholder="Resistance R (Ω)" value="{{ R or '' }}" required>
+            <input type="submit" value="Calculate Current I">
+        </form>
+
+        <h3>Ask a free question (Gemini API)</h3>
+        <form action="/makersuite_gen" method="post">
+            <input type="text" name="q" placeholder="Enter your physics question">
+            <input type="submit" value="Ask Gemini">
+        </form>
+        
+        <h3>Physics Formula Library</h3>
+        <form action="/formulas" method="get">
+            <input type="submit" value="View Formula Library">
+        </form>
+
+        {% if r %}
+        <div class="result">
+            {{ r }}
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>
